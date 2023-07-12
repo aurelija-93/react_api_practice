@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChartList from "../Components/ChartList";
 
 const ChartBox = function() {
-    const [songs, setSongs] = useState('');
+    const [songs, setSongs] = useState([]);
 
-    
+    useEffect(() => {
+        getSongs();
+    }, [])
+
+    const getSongs = async function() {
+        const res = await fetch('https://itunes.apple.com/gb/rss/topsongs/limit=20/json');
+        const songs = await res.json();
+        setSongs(songs.feed.entry);
+    }
 
     return (
         <>
